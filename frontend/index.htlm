@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Walff Banking's</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050608;
+  --surface: #0b0d12;
+  --surface-2: #11141b;
+  --surface-3: #181c25;
+  --border: #1c2030;
+  --border-hover: #2a3045;
+  --gold: #d4a843;
+  --gold-bright: #e8c468;
+  --gold-dim: rgba(212,168,67,0.08);
+  --gold-glow: rgba(212,168,67,0.2);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.08);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.08);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.08);
+  --purple: #a78bfa;
+  --text: #8b95a5;
+  --text-dim: #4a5568;
+  --text-bright: #e2e8f0;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Ambient ── */
+.ambient {
+  position: fixed; top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(212,168,67,0.03) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── App Shell ── */
+.app { max-width: 420px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; min-height: 100vh; }
+
+/* ── Screens ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ============================================================
+   LOGIN / REGISTER SCREEN
+   ============================================================ */
+.auth-screen {
+  justify-content: center;
+  padding: 40px 0;
+}
+.auth-logo {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.auth-logo .icon { font-size: 3rem; margin-bottom: 8px; }
+.auth-logo h1 {
+  font-size: 1.8rem; font-weight: 800;
+  color: var(--text-bright);
+  letter-spacing: -0.5px;
+}
+.auth-logo .sub {
+  font-family: var(--mono);
+  font-size: 0.7rem; color: var(--text-dim);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Logo ring animation */
+.logo-ring {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  position: relative;
+  background: radial-gradient(circle, rgba(212,168,67,0.04) 0%, transparent 70%);
+}
+.logo-ring::before {
+  content: ''; position: absolute;
+  inset: -3px; border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--gold);
+  animation: ringPulse 3s linear infinite;
+}
+@keyframes ringPulse {
+  0% { transform: rotate(0deg); opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { transform: rotate(360deg); opacity: 1; }
+}
+.logo-inner { display: flex; align-items: center; justify-content: center; }
+
+/* Input with icon */
+.input-icon {
+  position: relative;
+}
+.input-icon .fi {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.input-icon input {
+  padding-left: 42px !important;
+}
+
+/* Verify icon */
+.verify-icon {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* Test mode area */
+.test-mode-area {
+  margin-top: 28px;
+}
+.test-divider {
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative;
+}
+.test-divider::before {
+  content: '';
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+}
+.test-divider span {
+  position: relative;
+  background: var(--bg);
+  padding: 0 14px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+
+/* Powered by */
+.auth-powered {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  opacity: 0.6;
+}
+.auth-powered span {
+  color: var(--text-dim);
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 24px;
+}
+.auth-tabs {
+  display: flex; gap: 4px;
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1; padding: 10px;
+  border: none; border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 0.88rem; font-weight: 700;
+  cursor: pointer; transition: all 0.25s;
+}
+.auth-tab.active {
+  background: var(--gold);
+  color: #000;
+}
+
+/* ── Form elements ── */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block; font-size: 0.75rem;
+  font-weight: 700; color: var(--text-dim);
+  margin-bottom: 6px; letter-spacing: 0.3px;
+}
+.field input, .field select {
+  width: 100%; padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-bright);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+}
+.field input::placeholder { color: var(--text-dim); }
+.field .mono-input {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+}
+
+.btn {
+  width: 100%; padding: 14px;
+  border: none; border-radius: 12px;
+  font-family: var(--sans);
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+.btn-gold { background: var(--gold); color: #000; }
+.btn-gold:hover:not(:disabled) { background: var(--gold-bright); box-shadow: 0 4px 20px var(--gold-glow); }
+.btn-green { background: var(--green); color: #000; }
+.btn-red { background: var(--red); color: #fff; }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover:not(:disabled) { border-color: var(--text-dim); }
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.auth-footer a {
+  color: var(--gold);
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+}
+.error-msg {
+  background: var(--red-dim);
+  border: 1px solid rgba(248,113,113,0.2);
+  color: var(--red);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  margin-bottom: 16px;
+  display: none;
+}
+.success-msg {
+  background: var(--green-dim);
+  border: 1px solid rgba(52,211,153,0.2);
+  color: var(--green);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  margin-bottom: 16px;
+  display: none;
+}
+
+/* ============================================================
+   ONBOARDING (criar conta bancária após login)
+   ============================================================ */
+.onboard-screen {
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* ============================================================
+   MAIN APP
+   ============================================================ */
+.main-screen { padding-bottom: 90px; }
+
+/* Header */
+.app-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 16px;
+}
+.app-header .greeting {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.app-header .name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+.logout-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* Balance card */
+.balance-card {
+  background: linear-gradient(135deg, #12151e 0%, #0d1017 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.balance-card::after {
+  content: ''; position: absolute;
+  top: -50px; right: -50px;
+  width: 150px; height: 150px;
+  background: radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bal-label {
+  font-size: 0.75rem; color: var(--text-dim);
+  font-weight: 600; letter-spacing: 0.5px;
+}
+.bal-amount {
+  font-family: var(--mono);
+  font-size: 2.6rem; font-weight: 700;
+  color: var(--text-bright);
+  margin: 6px 0 4px;
+  letter-spacing: -1px;
+}
+.bal-amount .cur {
+  font-size: 1rem; color: var(--text-dim);
+  font-weight: 500; vertical-align: super;
+  margin-right: 2px;
+}
+.bal-conta {
+  font-family: var(--mono);
+  font-size: 0.72rem; color: var(--text-dim);
+}
+
+/* Quick actions */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.action-btn {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  padding: 16px 8px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.72rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.action-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.action-btn .ai { font-size: 1.3rem; }
+
+/* Tabs inside main */
+.main-tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.main-tab {
+  flex: 1; padding: 12px 8px;
+  border: none; background: transparent;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.main-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* Panels */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* Card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--text-dim); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 14px;
+}
+
+/* PIX key chips */
+.pix-keys { display: flex; flex-direction: column; gap: 8px; }
+.pix-key-item {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.pix-key-info { display: flex; align-items: center; gap: 10px; }
+.pix-key-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  background: var(--gold-dim);
+}
+.pix-key-type {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.pix-key-val {
+  font-family: var(--mono);
+  font-size: 0.8rem; color: var(--text-bright);
+}
+.pix-key-del {
+  padding: 6px 10px; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim);
+  font-size: 0.7rem; cursor: pointer;
+}
+.pix-key-del:hover { border-color: var(--red); color: var(--red); }
+
+/* Transaction list */
+.tx-list { list-style: none; }
+.tx-item {
+  display: flex; align-items: center;
+  gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tx-item:last-child { border-bottom: none; }
+.tx-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.tx-icon.dep { background: var(--green-dim); }
+.tx-icon.saq { background: var(--red-dim); }
+.tx-icon.pix { background: var(--blue-dim); }
+.tx-icon.open { background: var(--gold-dim); }
+.tx-info { flex: 1; min-width: 0; }
+.tx-type { font-size: 0.82rem; font-weight: 600; color: var(--text-bright); }
+.tx-desc {
+  font-size: 0.72rem; color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tx-right { text-align: right; }
+.tx-val {
+  font-family: var(--mono);
+  font-size: 0.85rem; font-weight: 600;
+}
+.tx-val.pos { color: var(--green); }
+.tx-val.neg { color: var(--red); }
+.tx-date { font-size: 0.65rem; color: var(--text-dim); }
+
+/* PIX confirm */
+.pix-confirm {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 14px 0;
+  text-align: center;
+}
+.pix-confirm .dest-name {
+  font-size: 1.2rem; font-weight: 700;
+  color: var(--text-bright); margin: 8px 0 4px;
+}
+.pix-confirm .dest-type {
+  font-size: 0.75rem; color: var(--text-dim);
+}
+
+/* Toast */
+.toast {
+  position: fixed; top: 16px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  padding: 12px 24px; border-radius: 12px;
+  font-size: 0.85rem; font-weight: 600;
+  z-index: 999; max-width: 90%;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--green); color: #000; }
+.toast.error { background: var(--red); color: #fff; }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Empty */
+.empty {
+  text-align: center; padding: 40px 20px;
+  color: var(--text-dim);
+}
+.empty .ei { font-size: 2rem; margin-bottom: 8px; }
+
+/* Bottom nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; max-width: 420px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex; padding: 8px 16px 12px;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+}
+.nav-btn {
+  flex: 1; display: flex;
+  flex-direction: column; align-items: center;
+  gap: 3px; padding: 6px;
+  border: none; background: transparent;
+  color: var(--text-dim);
+  font-family: var(--sans);
+  font-size: 0.65rem; font-weight: 600;
+  cursor: pointer; transition: color 0.2s;
+}
+.nav-btn .ni { font-size: 1.2rem; }
+.nav-btn.active { color: var(--gold); }
+
+/* Config bar */
+.config-bar {
+  padding: 12px 0; margin-bottom: 8px;
+}
+.config-bar details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.config-bar summary {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text-dim); cursor: pointer;
+  list-style: none;
+}
+.config-bar summary::marker { content: ''; }
+.config-bar input {
+  width: 100%; margin-top: 8px;
+  padding: 8px 12px; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg); color: var(--gold);
+  font-family: var(--mono); font-size: 0.75rem;
+  outline: none;
+}
+.config-bar .cfg-row {
+  display: flex; gap: 8px; margin-top: 8px;
+}
+.config-bar .cfg-row input { margin-top: 0; }
+.status-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.status-dot.on { background: var(--green); }
+.status-dot.off { background: var(--red); }
+
+@media (max-width: 380px) {
+  .bal-amount { font-size: 2.2rem; }
+  .actions-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div id="toast" class="toast"></div>
+
+<div class="app">
+
+<!-- ════════════════════════════════════════════
+     TELA 1: LOGIN / CADASTRO
+     ════════════════════════════════════════════ -->
+<div class="screen active" id="screen-auth">
+  <div class="auth-screen">
+
+    <!-- Logo animada -->
+    <div class="auth-logo">
+      <div class="logo-ring">
+        <div class="logo-inner">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/>
+          </svg>
+        </div>
+      </div>
+      <h1>Walff Banking's</h1>
+      <div class="sub">Seu banco digital serverless</div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showAuthTab('login')">Entrar</button>
+        <button class="auth-tab" onclick="showAuthTab('register')">Criar conta</button>
+      </div>
+
+      <div id="auth-error" class="error-msg"></div>
+      <div id="auth-success" class="success-msg"></div>
+
+      <!-- Login -->
+      <div id="tab-login">
+        <div class="field">
+          <label>Email</label>
+          <div class="input-icon">
+            <span class="fi">✉</span>
+            <input type="email" id="login-email" placeholder="seu@email.com">
+          </div>
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <div class="input-icon">
+            <span class="fi">🔒</span>
+            <input type="password" id="login-password" placeholder="••••••••">
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="doLogin()">
+          <span>Entrar</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- Register -->
+      <div id="tab-register" style="display:none;">
+        <div class="field">
+          <label>Nome completo</label>
+          <div class="input-icon">
+            <span class="fi">👤</span>
+            <input type="text" id="reg-name" placeholder="João Silva">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <div class="input-icon">
+            <span class="fi">✉</span>
+            <input type="email" id="reg-email" placeholder="seu@email.com">
+          </div>
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <div class="input-icon">
+            <span class="fi">🔒</span>
+            <input type="password" id="reg-password" placeholder="Mínimo 8 caracteres">
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="doRegister()">Criar conta</button>
+      </div>
+
+      <!-- Verify code -->
+      <div id="tab-verify" style="display:none;">
+        <div class="verify-icon">📧</div>
+        <p style="font-size:0.88rem; color:var(--text); margin-bottom:6px; text-align:center; font-weight:600;">
+          Verifique seu email
+        </p>
+        <p style="font-size:0.78rem; color:var(--text-dim); margin-bottom:20px; text-align:center;">
+          Enviamos um código de 6 dígitos para seu email.
+        </p>
+        <div class="field">
+          <label>Código de verificação</label>
+          <input type="text" id="verify-code" class="mono-input" placeholder="000000" maxlength="6" style="text-align:center; font-size:1.4rem; letter-spacing:8px;">
+        </div>
+        <button class="btn btn-gold" onclick="doVerify()">Verificar</button>
+      </div>
+    </div>
+
+    <!-- Modo teste discreto -->
+    <div class="test-mode-area">
+      <div class="test-divider"><span>ou entre em modo teste</span></div>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="cfg-test-user" placeholder="User ID para teste" style="flex:1; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text-bright); font-family:var(--mono); font-size:0.8rem; outline:none;">
+        <button class="btn btn-ghost" style="width:auto; padding:10px 18px; font-size:0.78rem;" onclick="doTestLogin()">Entrar</button>
+      </div>
+    </div>
+
+    <div class="auth-powered">
+      Criado por <span style="color:var(--gold);">Walff de Oliveira</span> · Powered by AWS Lambda · DynamoDB · Cognito
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     TELA 2: ONBOARDING (criar conta bancária)
+     ════════════════════════════════════════════ -->
+<div class="screen" id="screen-onboard">
+  <div class="onboard-screen">
+    <div class="auth-logo">
+      <div class="icon">👋</div>
+      <h1>Bem-vindo!</h1>
+      <div class="sub">Crie sua conta bancária</div>
+    </div>
+
+    <div class="auth-card">
+      <div id="onboard-error" class="error-msg"></div>
+      <div class="field">
+        <label>Nome completo</label>
+        <input type="text" id="onboard-name">
+      </div>
+      <div class="field">
+        <label>CPF</label>
+        <input type="text" id="onboard-cpf" class="mono-input" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)">
+      </div>
+      <button class="btn btn-gold" onclick="criarContaBancaria()">Criar minha conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     TELA 3: APP PRINCIPAL
+     ════════════════════════════════════════════ -->
+<div class="screen" id="screen-app">
+  <div class="main-screen">
+
+    <!-- Header -->
+    <div class="app-header">
+      <div>
+        <div class="greeting">Olá,</div>
+        <div class="name" id="app-name">—</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
+    </div>
+
+    <!-- Balance -->
+    <div class="balance-card">
+      <div class="bal-label">Saldo disponível</div>
+      <div class="bal-amount">
+        <span class="cur">R$</span>
+        <span id="app-balance">0,00</span>
+      </div>
+      <div class="bal-conta">Conta <span id="app-conta-id">—</span></div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="actions-grid">
+      <button class="action-btn" onclick="showPanel('depositar')">
+        <span class="ai">💰</span> Depositar
+      </button>
+      <button class="action-btn" onclick="showPanel('sacar')">
+        <span class="ai">🏧</span> Sacar
+      </button>
+      <button class="action-btn" onclick="showPanel('pix')">
+        <span class="ai">⚡</span> PIX
+      </button>
+      <button class="action-btn" onclick="showPanel('chaves')">
+        <span class="ai">🔑</span> Chaves
+      </button>
+    </div>
+
+    <!-- Panels -->
+
+    <!-- DEPOSITAR -->
+    <div class="panel" id="panel-depositar">
+      <div class="card">
+        <div class="card-title">💰 Depositar</div>
+        <div class="field">
+          <label>Valor (R$)</label>
+          <input type="text" id="dep-valor" class="mono-input" inputmode="numeric" placeholder="R$ 0,00" oninput="maskMoney(this)">
+        </div>
+        <div class="field">
+          <label>Descrição</label>
+          <input type="text" id="dep-desc" placeholder="Salário, PIX recebido...">
+        </div>
+        <button class="btn btn-green" onclick="opDepositar()">Depositar</button>
+      </div>
+    </div>
+
+    <!-- SACAR -->
+    <div class="panel" id="panel-sacar">
+      <div class="card">
+        <div class="card-title">🏧 Sacar</div>
+        <div class="field">
+          <label>Valor (R$)</label>
+          <input type="text" id="saq-valor" class="mono-input" inputmode="numeric" placeholder="R$ 0,00" oninput="maskMoney(this)">
+        </div>
+        <div class="field">
+          <label>Descrição</label>
+          <input type="text" id="saq-desc" placeholder="Mercado, conta...">
+        </div>
+        <button class="btn btn-red" onclick="opSacar()">Sacar</button>
+      </div>
+    </div>
+
+    <!-- PIX ENVIAR -->
+    <div class="panel" id="panel-pix">
+      <div class="card">
+        <div class="card-title">⚡ Enviar PIX</div>
+        <div class="field">
+          <label>Chave PIX do destinatário</label>
+          <input type="text" id="pix-chave" class="mono-input" placeholder="CPF, email ou chave aleatória">
+        </div>
+        <button class="btn btn-ghost" onclick="buscarDestinatario()" style="margin-bottom:12px;">Buscar destinatário</button>
+
+        <div id="pix-dest-info" style="display:none;">
+          <div class="pix-confirm">
+            <div style="font-size:0.75rem; color:var(--text-dim);">Destinatário encontrado</div>
+            <div class="dest-name" id="pix-dest-name">—</div>
+            <div class="dest-type" id="pix-dest-type">—</div>
+          </div>
+          <div class="field">
+            <label>Valor (R$)</label>
+            <input type="text" id="pix-valor" class="mono-input" inputmode="numeric" placeholder="R$ 0,00" oninput="maskMoney(this)">
+          </div>
+          <div class="field">
+            <label>Descrição</label>
+            <input type="text" id="pix-desc" placeholder="Almoço, presente...">
+          </div>
+          <button class="btn btn-blue" onclick="enviarPix()">⚡ Enviar PIX</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAVES PIX -->
+    <div class="panel" id="panel-chaves">
+      <div class="card">
+        <div class="card-title">🔑 Minhas chaves PIX</div>
+        <div id="chaves-list" class="pix-keys"></div>
+        <div id="chaves-empty" class="empty" style="display:none;">
+          <div class="ei">🔑</div>
+          <p>Nenhuma chave PIX registrada</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">➕ Registrar nova chave</div>
+        <div class="field">
+          <label>Tipo</label>
+          <select id="nova-chave-tipo">
+            <option value="CPF">CPF</option>
+            <option value="EMAIL">Email</option>
+            <option value="TELEFONE">Telefone (+5511...)</option>
+            <option value="ALEATORIA">Aleatória</option>
+          </select>
+        </div>
+        <div class="field" id="nova-chave-valor-field">
+          <label>Valor da chave</label>
+          <input type="text" id="nova-chave-valor" class="mono-input" placeholder="Digite a chave">
+        </div>
+        <button class="btn btn-gold" onclick="registrarChave()">Registrar chave</button>
+      </div>
+    </div>
+
+    <!-- EXTRATO -->
+    <div class="panel" id="panel-extrato">
+      <div class="card">
+        <div class="card-title">📋 Extrato</div>
+        <ul class="tx-list" id="extrato-list"></ul>
+        <div id="extrato-empty" class="empty" style="display:none;">
+          <div class="ei">📭</div>
+          <p>Nenhuma transação</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME (default) -->
+    <div class="panel active" id="panel-home">
+      <div class="card">
+        <div class="card-title">📋 Últimas transações</div>
+        <ul class="tx-list" id="home-tx-list"></ul>
+        <div id="home-tx-empty" class="empty">
+          <div class="ei">📭</div>
+          <p>Nenhuma transação ainda</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="showPanel('home')">
+      <span class="ni">🏠</span> Home
+    </button>
+    <button class="nav-btn" onclick="showPanel('pix')">
+      <span class="ni">⚡</span> PIX
+    </button>
+    <button class="nav-btn" onclick="showPanel('chaves')">
+      <span class="ni">🔑</span> Chaves
+    </button>
+    <button class="nav-btn" onclick="showPanel('extrato')">
+      <span class="ni">📋</span> Extrato
+    </button>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// 📌 CONCEITO: O frontend se comunica com:
+// 1. Cognito (login/cadastro) — via AWS SDK
+// 2. API Gateway (operações) — via fetch()
+//
+// O Cognito retorna um token JWT (idToken).
+// Esse token é enviado no header Authorization
+// de todas as requisições à API.
+// ════════════════════════════════════════════
+
+// ════════════════════════════════════════════
+// 📌 CONFIGURAÇÕES FIXAS — altere aqui se mudar a API
+// ════════════════════════════════════════════
+let API_URL = 'https://943xt7cjfd.execute-api.us-east-2.amazonaws.com/dev';
+let USER_POOL_ID = 'us-east-2_F6HA6LqdM';
+let CLIENT_ID = '5q522ta9hi9m5pu0horuasnca8';
+let authToken = '';
+let currentUser = null;
+let contaData = null;
+
+// ── Init ──
+window.addEventListener('DOMContentLoaded', () => {
+
+  // Tipo de chave PIX muda o campo
+  el('nova-chave-tipo').addEventListener('change', e => {
+    const field = el('nova-chave-valor-field');
+    field.style.display = e.target.value === 'ALEATORIA' ? 'none' : 'block';
+  });
+
+  // Check saved session
+  const saved = sessionStorage.getItem('minibanco_session');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      authToken = s.token;
+      currentUser = s.user;
+      loadApp();
+    } catch {}
+  }
+});
+
+function el(id) { return document.getElementById(id); }
+
+// ════════════════════════════════════════════
+// 🔐 AUTH — Cognito ou modo teste
+// ════════════════════════════════════════════
+
+function showAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  // Marca a tab correta como ativa
+  const tabs = document.querySelectorAll('.auth-tab');
+  if (tab === 'login' && tabs[0]) tabs[0].classList.add('active');
+  if (tab === 'register' && tabs[1]) tabs[1].classList.add('active');
+  el('tab-login').style.display = tab === 'login' ? 'block' : 'none';
+  el('tab-register').style.display = tab === 'register' ? 'block' : 'none';
+  el('tab-verify').style.display = tab === 'verify' ? 'block' : 'none';
+  el('auth-error').style.display = 'none';
+  el('auth-success').style.display = 'none';
+}
+
+function authError(msg) {
+  el('auth-error').textContent = msg;
+  el('auth-error').style.display = 'block';
+  el('auth-success').style.display = 'none';
+}
+function authSuccess(msg) {
+  el('auth-success').textContent = msg;
+  el('auth-success').style.display = 'block';
+  el('auth-error').style.display = 'none';
+}
+
+// ── Login via Cognito ──
+async function doLogin() {
+  const email = el('login-email').value.trim();
+  const password = el('login-password').value;
+
+  if (!email || !password) return authError('Preencha email e senha');
+
+  try {
+    const body = {
+      AuthParameters: { USERNAME: email, PASSWORD: password },
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      ClientId: CLIENT_ID
+    };
+
+    const res = await fetch(`https://cognito-idp.${USER_POOL_ID.split('_')[0]}.amazonaws.com/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-amz-json-1.1',
+        'X-Amz-Target': 'AWSCognitoIdentityProviderService.InitiateAuth'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (data.AuthenticationResult) {
+      authToken = data.AuthenticationResult.IdToken;
+      // Decode JWT to get user info
+      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      currentUser = {
+        id: payload.sub,
+        email: payload.email,
+        name: payload.name || payload.email
+      };
+      saveSession();
+      loadApp();
+    } else if (data.__type && data.__type.includes('NotAuthorized')) {
+      authError('Email ou senha incorretos');
+    } else if (data.ChallengeName === 'NEW_PASSWORD_REQUIRED') {
+      authError('Troque sua senha no Console do Cognito primeiro');
+    } else {
+      authError(data.message || 'Erro ao fazer login');
+    }
+  } catch (err) {
+    authError('Erro de conexão com Cognito: ' + err.message);
+  }
+}
+
+// ── Register via Cognito ──
+async function doRegister() {
+  const name = el('reg-name').value.trim();
+  const email = el('reg-email').value.trim();
+  const password = el('reg-password').value;
+
+  if (!name || !email || !password) return authError('Preencha todos os campos');
+  if (password.length < 8) return authError('Senha deve ter pelo menos 8 caracteres');
+
+  try {
+    const body = {
+      ClientId: CLIENT_ID,
+      Username: email,
+      Password: password,
+      UserAttributes: [
+        { Name: 'email', Value: email },
+        { Name: 'name', Value: name }
+      ]
+    };
+
+    const region = USER_POOL_ID.split('_')[0];
+    const res = await fetch(`https://cognito-idp.${region}.amazonaws.com/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-amz-json-1.1',
+        'X-Amz-Target': 'AWSCognitoIdentityProviderService.SignUp'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (data.UserSub) {
+      window._pendingEmail = email;
+      window._pendingPassword = password;
+      authSuccess('Conta criada! Verifique seu email para o código de confirmação.');
+      el('tab-register').style.display = 'none';
+      el('tab-verify').style.display = 'block';
+    } else {
+      authError(data.message || 'Erro ao cadastrar');
+    }
+  } catch (err) {
+    authError('Erro: ' + err.message);
+  }
+}
+
+// ── Verify email code ──
+async function doVerify() {
+  const code = el('verify-code').value.trim();
+  if (!code) return authError('Digite o código');
+
+  try {
+    const body = {
+      ClientId: CLIENT_ID,
+      Username: window._pendingEmail,
+      ConfirmationCode: code
+    };
+
+    const region = USER_POOL_ID.split('_')[0];
+    const res = await fetch(`https://cognito-idp.${region}.amazonaws.com/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-amz-json-1.1',
+        'X-Amz-Target': 'AWSCognitoIdentityProviderService.ConfirmSignUp'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (!data.__type) {
+      // Auto-login após verificação
+      authSuccess('Email verificado! Entrando...');
+      el('login-email').value = window._pendingEmail;
+      el('login-password').value = window._pendingPassword;
+      setTimeout(() => doLogin(), 500);
+    } else {
+      authError(data.message || 'Código inválido');
+    }
+  } catch (err) {
+    authError('Erro: ' + err.message);
+  }
+}
+
+
+
+function doLogout() {
+  authToken = '';
+  currentUser = null;
+  contaData = null;
+  sessionStorage.removeItem('minibanco_session');
+  showScreen('auth');
+}
+
+function saveSession() {
+  sessionStorage.setItem('minibanco_session', JSON.stringify({ token: authToken, user: currentUser }));
+}
+
+// ════════════════════════════════════════════
+// 🏦 APP LOGIC
+// ════════════════════════════════════════════
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  el(`screen-${name}`).classList.add('active');
+}
+
+async function loadApp() {
+  showScreen('app');
+  el('app-name').textContent = currentUser.name;
+
+  // Busca conta do usuário
+  try {
+    const data = await apiGet('/minha-conta');
+    if (data.erro && data.erro.includes('não tem')) {
+      // Precisa criar conta bancária
+      showScreen('onboard');
+      if (currentUser.name !== 'Modo Teste') {
+        el('onboard-name').value = currentUser.name;
+      }
+      return;
+    }
+    contaData = data;
+    updateUI();
+    loadExtrato();
+    loadChaves();
+  } catch (err) {
+    // Provavelmente 404 — precisa criar conta
+    showScreen('onboard');
+  }
+}
+
+async function criarContaBancaria() {
+  const nome = el('onboard-name').value.trim();
+  const cpf = el('onboard-cpf').value.trim();
+
+  if (!nome || !cpf) {
+    el('onboard-error').textContent = 'Preencha nome e CPF';
+    el('onboard-error').style.display = 'block';
+    return;
+  }
+
+  const data = await apiPost('/auth', { nome, cpf });
+
+  if (data.conta_id) {
+    toast('Conta criada com sucesso! 🎉');
+    loadApp();
+  } else {
+    el('onboard-error').textContent = data.erro || 'Erro ao criar conta';
+    el('onboard-error').style.display = 'block';
+  }
+}
+
+function updateUI() {
+  if (!contaData) return;
+  el('app-name').textContent = contaData.nome || currentUser.name;
+  el('app-balance').textContent = fmtMoney(contaData.saldo);
+  el('app-conta-id').textContent = contaData.conta_id;
+}
+
+// ── Panels ──
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el(`panel-${name}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n => {
+    if (n.textContent.trim().toLowerCase().includes(name.substring(0,3))) n.classList.add('active');
+  });
+  if (name === 'extrato') loadExtrato();
+  if (name === 'chaves') loadChaves();
+  if (name === 'home') { loadExtrato(); document.querySelector('.nav-btn').classList.add('active'); }
+}
+
+// ── Depositar ──
+async function opDepositar() {
+  const valor = getMoneyValue('dep-valor');
+  if (!valor || valor <= 0) return toast('Informe um valor válido', 'error');
+
+  const data = await apiPost('/depositar', {
+    valor, descricao: el('dep-desc').value || 'Depósito'
+  });
+
+  if (data.erro) return toast(data.erro, 'error');
+  toast(data.mensagem);
+  contaData.saldo = data.saldo_atual;
+  updateUI();
+  el('dep-valor').value = '';
+  el('dep-desc').value = '';
+}
+
+// ── Sacar ──
+async function opSacar() {
+  const valor = getMoneyValue('saq-valor');
+  if (!valor || valor <= 0) return toast('Informe um valor válido', 'error');
+
+  const data = await apiPost('/sacar', {
+    valor, descricao: el('saq-desc').value || 'Saque'
+  });
+
+  if (data.erro) return toast(data.erro, 'error');
+  toast(data.mensagem);
+  contaData.saldo = data.saldo_atual;
+  updateUI();
+  el('saq-valor').value = '';
+  el('saq-desc').value = '';
+}
+
+// ── PIX buscar ──
+async function buscarDestinatario() {
+  const chave = el('pix-chave').value.trim();
+  if (!chave) return toast('Informe a chave PIX', 'error');
+
+  const data = await apiPost('/pix/buscar', { chave });
+
+  if (data.erro) return toast(data.erro, 'error');
+
+  el('pix-dest-name').textContent = data.nome_titular;
+  el('pix-dest-type').textContent = `${data.tipo_chave} · ${data.chave}`;
+  el('pix-dest-info').style.display = 'block';
+}
+
+// ── PIX enviar ──
+async function enviarPix() {
+  const chave = el('pix-chave').value.trim();
+  const valor = getMoneyValue('pix-valor');
+  if (!valor || valor <= 0) return toast('Informe o valor', 'error');
+
+  const data = await apiPost('/pix/enviar', {
+    chave, valor, descricao: el('pix-desc').value || 'PIX'
+  });
+
+  if (data.erro) return toast(data.erro, 'error');
+  toast(data.mensagem);
+  contaData.saldo = data.saldo_atual;
+  updateUI();
+  el('pix-chave').value = '';
+  el('pix-valor').value = '';
+  el('pix-desc').value = '';
+  el('pix-dest-info').style.display = 'none';
+}
+
+// ── Chaves PIX ──
+async function loadChaves() {
+  const data = await apiGet('/pix/chaves');
+  const list = el('chaves-list');
+  const empty = el('chaves-empty');
+
+  if (!data.chaves || data.chaves.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  const icons = { CPF: '🆔', EMAIL: '📧', TELEFONE: '📱', ALEATORIA: '🔀' };
+
+  list.innerHTML = data.chaves.map(k => `
+    <div class="pix-key-item">
+      <div class="pix-key-info">
+        <div class="pix-key-icon">${icons[k.tipo] || '🔑'}</div>
+        <div>
+          <div class="pix-key-type">${k.tipo}</div>
+          <div class="pix-key-val">${k.chave.length > 24 ? k.chave.substring(0,24) + '...' : k.chave}</div>
+        </div>
+      </div>
+      <button class="pix-key-del" onclick="deletarChave('${k.chave}')">Remover</button>
+    </div>
+  `).join('');
+}
+
+async function registrarChave() {
+  const tipo = el('nova-chave-tipo').value;
+  const valor = tipo === 'ALEATORIA' ? '' : el('nova-chave-valor').value.trim();
+
+  if (tipo !== 'ALEATORIA' && !valor) return toast('Informe o valor da chave', 'error');
+
+  const body = { tipo };
+  if (valor) body.valor = valor;
+
+  const data = await apiPost('/pix/chaves', body);
+
+  if (data.erro) return toast(data.erro, 'error');
+  toast(data.mensagem);
+  el('nova-chave-valor').value = '';
+  loadChaves();
+}
+
+async function deletarChave(chave) {
+  const data = await apiFetch('/pix/chaves', 'DELETE', { chave });
+  if (data.erro) return toast(data.erro, 'error');
+  toast(data.mensagem);
+  loadChaves();
+}
+
+// ── Extrato ──
+async function loadExtrato() {
+  const data = await apiGet('/extrato');
+
+  if (data.erro) return;
+
+  const txs = data.transacoes || [];
+  renderTxList('extrato-list', 'extrato-empty', txs);
+  renderTxList('home-tx-list', 'home-tx-empty', txs.slice(0, 5));
+}
+
+function renderTxList(listId, emptyId, txs) {
+  const list = el(listId);
+  const empty = el(emptyId);
+
+  if (txs.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  const txMap = {
+    'DEPOSITO': { icon: '💰', cls: 'dep', label: 'Depósito', sign: '+' },
+    'SAQUE': { icon: '🏧', cls: 'saq', label: 'Saque', sign: '-' },
+    'PIX_ENVIADO': { icon: '↗️', cls: 'pix', label: 'PIX enviado', sign: '-' },
+    'PIX_RECEBIDO': { icon: '↙️', cls: 'dep', label: 'PIX recebido', sign: '+' },
+    'TRANSFERENCIA_ENVIADA': { icon: '↗️', cls: 'pix', label: 'Transferência', sign: '-' },
+    'TRANSFERENCIA_RECEBIDA': { icon: '↙️', cls: 'dep', label: 'Transferência', sign: '+' },
+    'ABERTURA': { icon: '🏦', cls: 'open', label: 'Abertura', sign: '' },
+  };
+
+  list.innerHTML = txs.map(tx => {
+    const t = txMap[tx.tipo] || { icon: '📄', cls: 'open', label: tx.tipo, sign: '' };
+    const d = new Date(tx.data);
+    const ds = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    const valCls = t.sign === '+' ? 'pos' : t.sign === '-' ? 'neg' : '';
+
+    return `
+      <li class="tx-item">
+        <div class="tx-icon ${t.cls}">${t.icon}</div>
+        <div class="tx-info">
+          <div class="tx-type">${t.label}</div>
+          <div class="tx-desc">${tx.descricao || '—'}</div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-val ${valCls}">${t.sign} R$ ${fmtMoney(tx.valor)}</div>
+          <div class="tx-date">${ds}</div>
+        </div>
+      </li>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+// 🔧 API helpers
+// ════════════════════════════════════════════
+
+function getHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+
+  if (authToken) {
+    h['Authorization'] = authToken;
+  }
+  if (currentUser && currentUser.isTest) {
+    h['X-User-Id'] = currentUser.id;
+  }
+
+  return h;
+}
+
+// ── Test login (sem Cognito) ──
+function doTestLogin() {
+  const userId = document.getElementById('cfg-test-user').value.trim();
+  if (!userId) return authError('Digite um User ID para teste');
+
+  authToken = '';
+  currentUser = { id: userId, email: 'teste@teste.com', name: userId, isTest: true };
+  saveSession();
+  loadApp();
+}
+
+async function apiGet(path) {
+  try {
+    const res = await fetch(`${API_URL}${path}`, { headers: getHeaders() });
+    return await res.json();
+  } catch (err) {
+    return { erro: 'Erro de conexão' };
+  }
+}
+
+async function apiPost(path, body) {
+  return apiFetch(path, 'POST', body);
+}
+
+async function apiFetch(path, method, body) {
+  try {
+    const res = await fetch(`${API_URL}${path}`, {
+      method,
+      headers: getHeaders(),
+      body: body ? JSON.stringify(body) : undefined
+    });
+    return await res.json();
+  } catch (err) {
+    return { erro: 'Erro de conexão' };
+  }
+}
+
+// ════════════════════════════════════════════
+// 🔧 Utils
+// ════════════════════════════════════════════
+
+function fmtMoney(val) {
+  return parseFloat(val || 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  });
+}
+
+// ── Máscaras de input ──
+function maskMoney(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v === '') { input.value = ''; return; }
+  v = (parseInt(v, 10) / 100).toFixed(2);
+  input.value = 'R$ ' + parseFloat(v).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  });
+}
+
+function getMoneyValue(id) {
+  const raw = el(id).value.replace(/[^\d,]/g, '').replace(',', '.');
+  return parseFloat(raw) || 0;
+}
+
+function maskCPF(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.substring(0, 11);
+  if (v.length > 9) {
+    v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+  } else if (v.length > 6) {
+    v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+  } else if (v.length > 3) {
+    v = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+  }
+  input.value = v;
+}
+
+function toast(msg, type = 'success') {
+  const t = el('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
