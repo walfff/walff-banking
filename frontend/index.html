@@ -462,9 +462,10 @@ body {
 /* Transaction list */
 .tx-list { list-style: none; }
 .tx-item {
-  display: flex; align-items: center;
-  gap: 12px; padding: 14px 0;
+  display: flex; align-items: flex-start;
+  gap: 10px; padding: 14px 0;
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 .tx-item:last-child { border-bottom: none; }
 .tx-icon {
@@ -478,20 +479,21 @@ body {
 .tx-icon.saq { background: var(--red-dim); }
 .tx-icon.pix { background: var(--blue-dim); }
 .tx-icon.open { background: var(--gold-dim); }
-.tx-info { flex: 1; min-width: 0; }
+.tx-info { flex: 1; min-width: 80px; }
 .tx-type { font-size: 1.05rem; font-weight: 600; color: var(--text-bright); }
 .tx-desc {
-  font-size: 1.2rem; color: var(--text-dim);
+  font-size: 0.95rem; color: var(--text-dim);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.tx-right { text-align: right; }
+.tx-right { text-align: right; flex-shrink: 0; max-width: 55%; }
 .tx-val {
   font-family: var(--mono);
-  font-size: 1.1rem; font-weight: 600;
+  font-size: 0.95rem; font-weight: 600;
+  word-break: break-all;
 }
 .tx-val.pos { color: var(--green); }
 .tx-val.neg { color: var(--red); }
-.tx-date { font-size: 0.9rem; color: var(--text-dim); }
+.tx-date { font-size: 0.85rem; color: var(--text-dim); }
 
 /* PIX confirm */
 .pix-confirm {
