@@ -32,12 +32,13 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
+html { font-size: 18px; } /* Base maior para melhor leitura */
 html, body { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -69,15 +70,15 @@ body {
   text-align: center;
   margin-bottom: 48px;
 }
-.auth-logo .icon { font-size: 3rem; margin-bottom: 8px; }
+.auth-logo .icon { font-size: 3.5rem; margin-bottom: 8px; }
 .auth-logo h1 {
-  font-size: 1.8rem; font-weight: 800;
+  font-size: 2.2rem; font-weight: 800;
   color: var(--text-bright);
   letter-spacing: -0.5px;
 }
 .auth-logo .sub {
   font-family: var(--mono);
-  font-size: 0.7rem; color: var(--text-dim);
+  font-size: 1.2rem; color: var(--text-dim);
   letter-spacing: 1.5px; text-transform: uppercase;
   margin-top: 4px;
 }
@@ -114,7 +115,7 @@ body {
 .input-icon .fi {
   position: absolute; left: 14px; top: 50%;
   transform: translateY(-50%);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   pointer-events: none;
   opacity: 0.5;
 }
@@ -124,7 +125,7 @@ body {
 
 /* Verify icon */
 .verify-icon {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   text-align: center;
   margin-bottom: 12px;
 }
@@ -148,7 +149,7 @@ body {
   position: relative;
   background: var(--bg);
   padding: 0 14px;
-  font-size: 0.7rem;
+  font-size: 1.2rem;
   color: var(--text-dim);
   letter-spacing: 0.3px;
 }
@@ -157,7 +158,7 @@ body {
 .auth-powered {
   text-align: center;
   margin-top: 32px;
-  font-size: 0.62rem;
+  font-size: 1.1rem;
   color: var(--text-dim);
   letter-spacing: 0.5px;
   opacity: 0.6;
@@ -185,7 +186,7 @@ body {
   background: transparent;
   color: var(--text-dim);
   font-family: var(--sans);
-  font-size: 0.88rem; font-weight: 700;
+  font-size: 1.1rem; font-weight: 700;
   cursor: pointer; transition: all 0.25s;
 }
 .auth-tab.active {
@@ -196,18 +197,18 @@ body {
 /* ── Form elements ── */
 .field { margin-bottom: 18px; }
 .field label {
-  display: block; font-size: 0.75rem;
+  display: block; font-size: 1.25rem;
   font-weight: 700; color: var(--text-dim);
   margin-bottom: 6px; letter-spacing: 0.3px;
 }
 .field input, .field select {
-  width: 100%; padding: 13px 16px;
+  width: 100%; padding: 16px 18px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text-bright);
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-size: 1.25rem;
   outline: none;
   transition: all 0.2s;
 }
@@ -218,15 +219,15 @@ body {
 .field input::placeholder { color: var(--text-dim); }
 .field .mono-input {
   font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   color: var(--gold);
 }
 
 .btn {
-  width: 100%; padding: 14px;
+  width: 100%; padding: 18px;
   border: none; border-radius: 12px;
   font-family: var(--sans);
-  font-size: 0.95rem; font-weight: 700;
+  font-size: 1.2rem; font-weight: 700;
   cursor: pointer; transition: all 0.2s;
   display: flex; align-items: center;
   justify-content: center; gap: 8px;
@@ -247,7 +248,7 @@ body {
 .auth-footer {
   text-align: center;
   margin-top: 24px;
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   color: var(--text-dim);
 }
 .auth-footer a {
@@ -262,7 +263,7 @@ body {
   color: var(--red);
   padding: 10px 14px;
   border-radius: 10px;
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   margin-bottom: 16px;
   display: none;
 }
@@ -272,7 +273,7 @@ body {
   color: var(--green);
   padding: 10px 14px;
   border-radius: 10px;
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   margin-bottom: 16px;
   display: none;
 }
@@ -297,11 +298,11 @@ body {
   padding: 20px 0 16px;
 }
 .app-header .greeting {
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   color: var(--text-dim);
 }
 .app-header .name {
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-bright);
 }
@@ -312,7 +313,7 @@ body {
   background: transparent;
   color: var(--text-dim);
   font-family: var(--sans);
-  font-size: 0.75rem;
+  font-size: 1.25rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -336,24 +337,24 @@ body {
   pointer-events: none;
 }
 .bal-label {
-  font-size: 0.75rem; color: var(--text-dim);
+  font-size: 1.25rem; color: var(--text-dim);
   font-weight: 600; letter-spacing: 0.5px;
 }
 .bal-amount {
   font-family: var(--mono);
-  font-size: 2.6rem; font-weight: 700;
+  font-size: 3.6rem; font-weight: 700;
   color: var(--text-bright);
-  margin: 6px 0 4px;
+  margin: 8px 0 6px;
   letter-spacing: -1px;
 }
 .bal-amount .cur {
-  font-size: 1rem; color: var(--text-dim);
+  font-size: 1.4rem; color: var(--text-dim);
   font-weight: 500; vertical-align: super;
-  margin-right: 2px;
+  margin-right: 4px;
 }
 .bal-conta {
   font-family: var(--mono);
-  font-size: 0.72rem; color: var(--text-dim);
+  font-size: 1.2rem; color: var(--text-dim);
 }
 
 /* Quick actions */
@@ -372,14 +373,14 @@ body {
   background: var(--surface);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 0.72rem; font-weight: 600;
+  font-size: 1.2rem; font-weight: 600;
   cursor: pointer; transition: all 0.2s;
 }
 .action-btn:hover {
   border-color: var(--gold);
   transform: translateY(-2px);
 }
-.action-btn .ai { font-size: 1.3rem; }
+.action-btn .ai { font-size: 1.5rem; }
 
 /* Tabs inside main */
 .main-tabs {
@@ -392,7 +393,7 @@ body {
   border: none; background: transparent;
   color: var(--text-dim);
   font-family: var(--sans);
-  font-size: 0.82rem; font-weight: 600;
+  font-size: 1.05rem; font-weight: 600;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
@@ -416,7 +417,7 @@ body {
   margin-bottom: 12px;
 }
 .card-title {
-  font-size: 0.7rem; font-weight: 700;
+  font-size: 1.2rem; font-weight: 700;
   color: var(--text-dim); text-transform: uppercase;
   letter-spacing: 1px; margin-bottom: 14px;
 }
@@ -437,22 +438,22 @@ body {
   border-radius: 8px;
   display: flex; align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   background: var(--gold-dim);
 }
 .pix-key-type {
-  font-size: 0.72rem; font-weight: 700;
+  font-size: 1.2rem; font-weight: 700;
   color: var(--text-dim); text-transform: uppercase;
 }
 .pix-key-val {
   font-family: var(--mono);
-  font-size: 0.8rem; color: var(--text-bright);
+  font-size: 1.05rem; color: var(--text-bright);
 }
 .pix-key-del {
   padding: 6px 10px; border-radius: 6px;
   border: 1px solid var(--border);
   background: transparent; color: var(--text-dim);
-  font-size: 0.7rem; cursor: pointer;
+  font-size: 1.2rem; cursor: pointer;
 }
 .pix-key-del:hover { border-color: var(--red); color: var(--red); }
 
@@ -469,26 +470,26 @@ body {
   border-radius: 10px;
   display: flex; align-items: center;
   justify-content: center;
-  font-size: 1rem; flex-shrink: 0;
+  font-size: 1.25rem; flex-shrink: 0;
 }
 .tx-icon.dep { background: var(--green-dim); }
 .tx-icon.saq { background: var(--red-dim); }
 .tx-icon.pix { background: var(--blue-dim); }
 .tx-icon.open { background: var(--gold-dim); }
 .tx-info { flex: 1; min-width: 0; }
-.tx-type { font-size: 0.82rem; font-weight: 600; color: var(--text-bright); }
+.tx-type { font-size: 1.05rem; font-weight: 600; color: var(--text-bright); }
 .tx-desc {
-  font-size: 0.72rem; color: var(--text-dim);
+  font-size: 1.2rem; color: var(--text-dim);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .tx-right { text-align: right; }
 .tx-val {
   font-family: var(--mono);
-  font-size: 0.85rem; font-weight: 600;
+  font-size: 1.1rem; font-weight: 600;
 }
 .tx-val.pos { color: var(--green); }
 .tx-val.neg { color: var(--red); }
-.tx-date { font-size: 0.65rem; color: var(--text-dim); }
+.tx-date { font-size: 0.9rem; color: var(--text-dim); }
 
 /* PIX confirm */
 .pix-confirm {
@@ -504,7 +505,7 @@ body {
   color: var(--text-bright); margin: 8px 0 4px;
 }
 .pix-confirm .dest-type {
-  font-size: 0.75rem; color: var(--text-dim);
+  font-size: 1.25rem; color: var(--text-dim);
 }
 
 /* Toast */
@@ -512,7 +513,7 @@ body {
   position: fixed; top: 16px; left: 50%;
   transform: translateX(-50%) translateY(-100px);
   padding: 12px 24px; border-radius: 12px;
-  font-size: 0.85rem; font-weight: 600;
+  font-size: 1.1rem; font-weight: 600;
   z-index: 999; max-width: 90%;
   transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -552,14 +553,14 @@ body {
 .nav-btn {
   flex: 1; display: flex;
   flex-direction: column; align-items: center;
-  gap: 3px; padding: 6px;
+  gap: 4px; padding: 8px;
   border: none; background: transparent;
   color: var(--text-dim);
   font-family: var(--sans);
-  font-size: 0.65rem; font-weight: 600;
+  font-size: 0.9rem; font-weight: 600;
   cursor: pointer; transition: color 0.2s;
 }
-.nav-btn .ni { font-size: 1.2rem; }
+.nav-btn .ni { font-size: 1.5rem; }
 .nav-btn.active { color: var(--gold); }
 
 /* Config bar */
@@ -573,7 +574,7 @@ body {
   padding: 10px 14px;
 }
 .config-bar summary {
-  font-size: 0.72rem; font-weight: 600;
+  font-size: 1.2rem; font-weight: 600;
   color: var(--text-dim); cursor: pointer;
   list-style: none;
 }
@@ -583,7 +584,7 @@ body {
   padding: 8px 12px; border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--bg); color: var(--gold);
-  font-family: var(--mono); font-size: 0.75rem;
+  font-family: var(--mono); font-size: 1.25rem;
   outline: none;
 }
 .config-bar .cfg-row {
@@ -691,10 +692,10 @@ body {
       <!-- Verify code -->
       <div id="tab-verify" style="display:none;">
         <div class="verify-icon">📧</div>
-        <p style="font-size:0.88rem; color:var(--text); margin-bottom:6px; text-align:center; font-weight:600;">
+        <p style="font-size:1.1rem; color:var(--text); margin-bottom:6px; text-align:center; font-weight:600;">
           Verifique seu email
         </p>
-        <p style="font-size:0.78rem; color:var(--text-dim); margin-bottom:20px; text-align:center;">
+        <p style="font-size:1rem; color:var(--text-dim); margin-bottom:20px; text-align:center;">
           Enviamos um código de 6 dígitos para seu email.
         </p>
         <div class="field">
@@ -709,8 +710,8 @@ body {
     <div class="test-mode-area">
       <div class="test-divider"><span>ou entre em modo teste</span></div>
       <div style="display:flex; gap:8px;">
-        <input type="text" id="cfg-test-user" placeholder="User ID para teste" style="flex:1; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text-bright); font-family:var(--mono); font-size:0.8rem; outline:none;">
-        <button class="btn btn-ghost" style="width:auto; padding:10px 18px; font-size:0.78rem;" onclick="doTestLogin()">Entrar</button>
+        <input type="text" id="cfg-test-user" placeholder="User ID para teste" style="flex:1; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text-bright); font-family:var(--mono); font-size:1.05rem; outline:none;">
+        <button class="btn btn-ghost" style="width:auto; padding:10px 18px; font-size:1rem;" onclick="doTestLogin()">Entrar</button>
       </div>
     </div>
 
