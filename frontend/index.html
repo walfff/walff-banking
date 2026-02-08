@@ -342,10 +342,12 @@ body {
 }
 .bal-amount {
   font-family: var(--mono);
-  font-size: 3.6rem; font-weight: 700;
+  font-size: clamp(1.8rem, 8vw, 3.6rem); font-weight: 700;
   color: var(--text-bright);
   margin: 8px 0 6px;
   letter-spacing: -1px;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 .bal-amount .cur {
   font-size: 1.4rem; color: var(--text-dim);
@@ -1202,8 +1204,19 @@ async function criarContaBancaria() {
 function updateUI() {
   if (!contaData) return;
   el('app-name').textContent = contaData.nome || currentUser.name;
-  el('app-balance').textContent = fmtMoney(contaData.saldo);
+  const balText = fmtMoney(contaData.saldo);
+  el('app-balance').textContent = balText;
   el('app-conta-id').textContent = contaData.conta_id;
+
+  // Auto-resize: reduz fonte para valores grandes
+  const balEl = document.querySelector('.bal-amount');
+  if (balText.length > 12) {
+    balEl.style.fontSize = '1.8rem';
+  } else if (balText.length > 9) {
+    balEl.style.fontSize = '2.4rem';
+  } else {
+    balEl.style.fontSize = '';
+  }
 }
 
 // ── Panels ──
