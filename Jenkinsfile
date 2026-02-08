@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    options {
+        ansiColor('xterm')
+    }
     environment {
         AWS_REGION         = 'us-east-2'
         LAMBDA_FUNCTION    = 'mini-banco-lambda'
